@@ -1,0 +1,6 @@
+{
+  "name": "Virtual Birthday Celebration",
+  "description": "An interactive virtual birthday celebration where you blow out candles, cut the cake with a knife, take a slice, and celebrate with music and confetti!",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
