@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react';
 import { InstructionBar } from './components/InstructionBar';
 import { BirthdayScene } from './components/BirthdayScene';
 import { CelebrationScreen } from './components/CelebrationScreen';
-import { Step } from './types';
+import { Step, Occasion } from './types';
 import { soundEngine } from './utils/audio';
 import {
   triggerBlowConfetti,
@@ -22,7 +22,8 @@ export default function App() {
   const [knifeDragging, setKnifeDragging] = useState(false);
   const [cakeCut, setCakeCut] = useState(false);
   const [sliceSelected, setSliceSelected] = useState(false);
-  const [personName, setPersonName] = useState('Alex');
+  const [personName, setPersonName] = useState('Aman');
+  const [occasion, setOccasion] = useState<Occasion>('birthday');
   const [soundEnabled, setSoundEnabled] = useState(true);
 
   // Sync soundEngine enabled state
@@ -108,6 +109,8 @@ export default function App() {
         onToggleSound={toggleSound}
         personName={personName}
         onChangeName={setPersonName}
+        occasion={occasion}
+        onChangeOccasion={setOccasion}
       />
 
       {/* Main Interactive Stage */}
@@ -127,6 +130,7 @@ export default function App() {
         ) : (
           <CelebrationScreen
             personName={personName}
+            occasion={occasion}
             onReset={handleReset}
           />
         )}

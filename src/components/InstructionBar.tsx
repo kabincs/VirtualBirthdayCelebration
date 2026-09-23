@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from 'motion/react';
 import { Volume2, VolumeX, CheckCircle2, Sparkles } from 'lucide-react';
-import { Step } from '../types';
+import { Step, Occasion } from '../types';
+import { OCCASION_OPTIONS, getOccasionConfig } from '../utils/occasions';
 
 interface InstructionBarProps {
   currentStep: Step;
@@ -9,6 +10,8 @@ interface InstructionBarProps {
   onToggleSound: () => void;
   personName: string;
   onChangeName: (name: string) => void;
+  occasion: Occasion;
+  onChangeOccasion: (occasion: Occasion) => void;
 }
 
 const stepsConfig = [
@@ -25,12 +28,16 @@ export function InstructionBar({
   onToggleSound,
   personName,
   onChangeName,
+  occasion,
+  onChangeOccasion,
 }: InstructionBarProps) {
+  const occasionConfig = getOccasionConfig(occasion);
+
   // Determine message
   const getInstructionText = () => {
     switch (currentStep) {
       case 'blow-candles':
-        return "🎂 It's Birthday Time! Click the button below to blow out the candles!";
+        return occasionConfig.blowCandlesText;
       case 'cut-cake':
         if (knifeDragging) {
           return "🔪 Move the knife to the highlighted area on the cake to cut!";
@@ -39,11 +46,12 @@ export function InstructionBar({
       case 'take-slice':
         return "🍰 One more step! Click the cake slice to celebrate!";
       case 'celebration':
-        return `🎉 Happy Birthday${personName ? `, ${personName}` : ''}! Enjoy your special day!`;
+        return `${occasionConfig.emoji} ${occasionConfig.celebrationInstructionText}${personName ? `, ${personName}` : ''}!`;
       default:
-        return "🎂 Happy Birthday!";
+        return `${occasionConfig.emoji} ${occasionConfig.celebrationInstructionText}!`;
     }
   };
+
 
   const getStepIndex = (step: Step) => {
     switch (step) {
@@ -59,16 +67,16 @@ export function InstructionBar({
   return (
     <header className="w-full max-w-4xl mx-auto px-4 pt-4 pb-2 select-none z-20">
       {/* Top Utility Bar with Name and Audio controls */}
-      <div className="flex items-center justify-between gap-2 mb-3">
+      <div className="flex items-center justify-between gap-2 mb-2">
         <div className="flex items-center gap-2 bg-white/85 backdrop-blur-md px-3.5 py-1.5 rounded-full shadow-sm border border-pink-100/80">
           <span className="text-sm">🎈 Celebrating:</span>
           <input
             type="text"
             value={personName}
             onChange={(e) => onChangeName(e.target.value)}
-            placeholder="Birthday Star"
+            placeholder="Aman"
             maxLength={20}
-            aria-label="Birthday person name"
+            aria-label="Celebration person name"
             className="text-sm font-bold text-pink-600 bg-transparent border-b border-dashed border-pink-300 focus:outline-none focus:border-pink-500 max-w-[140px] px-1 py-0.5"
           />
         </div>
@@ -91,6 +99,25 @@ export function InstructionBar({
             </>
           )}
         </button>
+      </div>
+
+      {/* Occasion Selector */}
+      <div className="flex items-center justify-start mb-3">
+        <div className="flex items-center gap-2 bg-white/85 backdrop-blur-md px-3.5 py-1.5 rounded-full shadow-sm border border-pink-100/80">
+          <span className="text-sm">{occasionConfig.emoji} Occasion:</span>
+          <select
+            value={occasion}
+            onChange={(e) => onChangeOccasion(e.target.value as Occasion)}
+            aria-label="Select occasion"
+            className="text-sm font-bold text-pink-600 bg-transparent border-b border-dashed border-pink-300 focus:outline-none focus:border-pink-500 px-1 py-0.5 cursor-pointer"
+          >
+            {OCCASION_OPTIONS.map((opt) => (
+              <option key={opt.value} value={opt.value}>
+                {opt.emoji} {opt.label}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
       {/* Main Dynamic Instruction Card */}

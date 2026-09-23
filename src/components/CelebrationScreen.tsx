@@ -1,12 +1,17 @@
 import { motion } from 'motion/react';
 import { Sparkles, RotateCcw, Heart, Gift, PartyPopper } from 'lucide-react';
+import { Occasion } from '../types';
+import { getOccasionConfig } from '../utils/occasions';
 
 interface CelebrationScreenProps {
   personName: string;
+  occasion: Occasion;
   onReset: () => void;
 }
 
-export function CelebrationScreen({ personName, onReset }: CelebrationScreenProps) {
+export function CelebrationScreen({ personName, occasion, onReset }: CelebrationScreenProps) {
+  const occasionConfig = getOccasionConfig(occasion);
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
@@ -27,7 +32,7 @@ export function CelebrationScreen({ personName, onReset }: CelebrationScreenProp
             className="inline-flex items-center gap-1 bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full border border-amber-300 shadow-xs"
           >
             <PartyPopper className="w-3.5 h-3.5 text-amber-600" />
-            <span>VIP Day</span>
+            <span>{occasionConfig.badgeOne}</span>
           </motion.span>
           <motion.span
             animate={{ rotate: [8, -8, 8], y: [0, -4, 0] }}
@@ -35,7 +40,7 @@ export function CelebrationScreen({ personName, onReset }: CelebrationScreenProp
             className="inline-flex items-center gap-1 bg-pink-100 text-pink-800 text-xs font-bold px-3 py-1 rounded-full border border-pink-300 shadow-xs"
           >
             <Gift className="w-3.5 h-3.5 text-pink-600" />
-            <span>Special Celebration</span>
+            <span>{occasionConfig.badgeTwo}</span>
           </motion.span>
         </div>
 
@@ -46,7 +51,7 @@ export function CelebrationScreen({ personName, onReset }: CelebrationScreenProp
           transition={{ delay: 0.1, duration: 0.5 }}
           className="text-3xl sm:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-600 via-rose-500 to-amber-500 tracking-tight font-['Fredoka',sans-serif] leading-tight mb-2 drop-shadow-sm"
         >
-          🎉 HAPPY BIRTHDAY! 🎉
+          {occasionConfig.title}
         </motion.h1>
 
         {personName && (
@@ -67,7 +72,7 @@ export function CelebrationScreen({ personName, onReset }: CelebrationScreenProp
           transition={{ delay: 0.3, duration: 0.4 }}
           className="text-base sm:text-lg text-slate-700 font-semibold max-w-lg mx-auto mb-4 leading-relaxed"
         >
-          May your day be filled with happiness, laughter and lots of cake! ❤️
+          {occasionConfig.message}
         </motion.p>
 
         {/* Prompt subline: Mission Complete */}
@@ -77,7 +82,7 @@ export function CelebrationScreen({ personName, onReset }: CelebrationScreenProp
           transition={{ delay: 0.4, type: 'spring', stiffness: 200 }}
           className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold text-sm sm:text-base px-5 py-2 rounded-full shadow-lg shadow-emerald-500/20 mb-6"
         >
-          <span>Mission Complete: Cake successfully enjoyed! 🍰</span>
+          <span>{occasionConfig.missionText}</span>
           <Sparkles className="w-4 h-4 text-yellow-300 animate-spin" />
         </motion.div>
 
@@ -112,7 +117,7 @@ export function CelebrationScreen({ personName, onReset }: CelebrationScreenProp
           className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-gradient-to-r from-pink-500 to-rose-500 text-white font-bold text-base sm:text-lg shadow-xl hover:shadow-pink-500/30 transition-all border-2 border-white/60 cursor-pointer"
         >
           <RotateCcw className="w-5 h-5" />
-          <span>🎂 Celebrate Again</span>
+          <span>{occasionConfig.buttonText}</span>
         </motion.button>
       </div>
     </motion.div>
