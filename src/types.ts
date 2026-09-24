@@ -15,3 +15,13 @@ export interface CakeInteractionState {
   occasion: Occasion;
   soundEnabled: boolean;
 }
+
+// "Know Your Colleague" game
+export interface GameQuestion {
+  question: string;
+  answer: string;
+  revealed: boolean;
+}
+
+export type GameState = 'setup' | 'answering' | 'waitingForReveal' | 'revealing' | 'completed';
+

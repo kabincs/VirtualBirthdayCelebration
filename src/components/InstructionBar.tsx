@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'motion/react';
-import { Volume2, VolumeX, CheckCircle2, Sparkles } from 'lucide-react';
+import { Volume2, VolumeX, CheckCircle2, Sparkles, Target } from 'lucide-react';
 import { Step, Occasion } from '../types';
 import { OCCASION_OPTIONS, getOccasionConfig } from '../utils/occasions';
 
@@ -12,6 +12,7 @@ interface InstructionBarProps {
   onChangeName: (name: string) => void;
   occasion: Occasion;
   onChangeOccasion: (occasion: Occasion) => void;
+  onOpenGame: () => void;
 }
 
 const stepsConfig = [
@@ -30,6 +31,7 @@ export function InstructionBar({
   onChangeName,
   occasion,
   onChangeOccasion,
+  onOpenGame,
 }: InstructionBarProps) {
   const occasionConfig = getOccasionConfig(occasion);
 
@@ -102,7 +104,7 @@ export function InstructionBar({
       </div>
 
       {/* Occasion Selector */}
-      <div className="flex items-center justify-start mb-3">
+      <div className="flex items-center justify-between gap-2 flex-wrap mb-3">
         <div className="flex items-center gap-2 bg-white/85 backdrop-blur-md px-3.5 py-1.5 rounded-full shadow-sm border border-pink-100/80">
           <span className="text-sm">{occasionConfig.emoji} Occasion:</span>
           <select
@@ -118,6 +120,17 @@ export function InstructionBar({
             ))}
           </select>
         </div>
+
+        <motion.button
+          type="button"
+          onClick={onOpenGame}
+          whileHover={{ scale: 1.04 }}
+          whileTap={{ scale: 0.96 }}
+          className="flex items-center gap-1.5 text-xs font-bold px-3.5 py-1.5 rounded-full bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-sm hover:shadow-md transition cursor-pointer"
+        >
+          <Target className="w-4 h-4" />
+          <span>Know Your Colleague</span>
+        </motion.button>
       </div>
 
       {/* Main Dynamic Instruction Card */}

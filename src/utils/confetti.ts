@@ -83,5 +83,18 @@ export function triggerGrandCelebration() {
       particleCount,
       origin: { x: randomInRange(0.6, 0.85), y: Math.random() - 0.2 },
     });
+    
   }, 250);
+}
+
+export function triggerRevealBurst() {
+  confetti({
+    particleCount: 60,
+    spread: 80,
+    origin: { y: 0.4 },
+    colors: ['#EC4899', '#8B5CF6', '#F59E0B', '#10B981', '#38BDF8'],
+    ticks: 150,
+    gravity: 0.85,
+    scalar: 0.95,
+  });
 }

@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react';
 import { InstructionBar } from './components/InstructionBar';
 import { BirthdayScene } from './components/BirthdayScene';
 import { CelebrationScreen } from './components/CelebrationScreen';
+import { KnowYourColleague } from './components/KnowYourColleague/KnowYourColleague';
 import { Step, Occasion } from './types';
 import { soundEngine } from './utils/audio';
 import {
@@ -25,6 +26,7 @@ export default function App() {
   const [personName, setPersonName] = useState('Aman');
   const [occasion, setOccasion] = useState<Occasion>('birthday');
   const [soundEnabled, setSoundEnabled] = useState(true);
+  const [appView, setAppView] = useState<'birthday' | 'game'>('birthday');
 
   // Sync soundEngine enabled state
   useEffect(() => {
@@ -95,6 +97,9 @@ export default function App() {
     setSoundEnabled((prev) => !prev);
   };
 
+  const handleOpenGame = () => setAppView('game');
+  const handleCloseGame = () => setAppView('birthday');
+
   return (
     <div className="min-h-screen w-full flex flex-col justify-between bg-gradient-to-b from-amber-50/70 via-pink-50/60 to-rose-100/50 text-slate-800 relative overflow-x-hidden selection:bg-pink-300 selection:text-pink-900">
       {/* Background festive ambient gradient circles */}
@@ -102,20 +107,25 @@ export default function App() {
       <div className="fixed bottom-0 right-1/4 w-96 h-96 bg-amber-300/15 rounded-full blur-3xl pointer-events-none" />
 
       {/* Top Instruction & Progress Bar */}
-      <InstructionBar
-        currentStep={currentStep}
-        knifeDragging={knifeDragging}
-        soundEnabled={soundEnabled}
-        onToggleSound={toggleSound}
-        personName={personName}
-        onChangeName={setPersonName}
-        occasion={occasion}
-        onChangeOccasion={setOccasion}
-      />
+      {appView === 'birthday' && (
+        <InstructionBar
+          currentStep={currentStep}
+          knifeDragging={knifeDragging}
+          soundEnabled={soundEnabled}
+          onToggleSound={toggleSound}
+          personName={personName}
+          onChangeName={setPersonName}
+          occasion={occasion}
+          onChangeOccasion={setOccasion}
+          onOpenGame={handleOpenGame}
+        />
+      )}
 
       {/* Main Interactive Stage */}
       <main className="flex-1 flex flex-col items-center justify-center relative w-full my-auto">
-        {currentStep !== 'celebration' ? (
+        {appView === 'game' ? (
+          <KnowYourColleague personName={personName} onBack={handleCloseGame} />
+        ) : currentStep !== 'celebration' ? (
           <BirthdayScene
             currentStep={currentStep}
             candlesBlown={candlesBlown}
